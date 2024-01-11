@@ -31,14 +31,16 @@ const crawler = new PlaywrightCrawler({
 
     log.info(`Movie: ${movieDetail.title}`);
 
-    const imgContainer = await page.locator("div.bwg-item ");
+    const imgContainer = await page.locator("div.bwg-item");
     //Get img link from imgContainer
-    const imgLink = await imgContainer.locator("img").elementHandles();
+    const imgLink = await imgContainer.locator("a.bwg-a ").elementHandles();
     for (const link of imgLink) {
-      const imgSrc = await link.getAttribute("src");
+      const imgSrc = await link.getAttribute("href");
       movieDetail.imglink.push(imgSrc);
-      log.info(`Img link: ${imgSrc}`);
     }
+
+    //save to json
+    pushData(movieDetail);
   },
   // Comment this option to scrape the full website.
   maxRequestsPerCrawl: 20,
